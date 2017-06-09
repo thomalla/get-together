@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/generalLayout :: head(pageTitle='GetTogether')">
+</head>
+<body>
+
+<div th:switch="${currentUser!=null}">
+    <div th:case="false" th:include="layout/unloggedLayout :: toolbar"></div>
+    <div th:case="true" th:include="layout/loggedLayout :: toolbar"></div>
+</div>
+<div id="fullscreen_bg" class="fullscreen_bg"/>
+
+<header>
+    <div class="container">
+        <div th:if="!${currentUser}" class="intro-text">
+            <div class="intro-heading">Witamy na Get-Together</div>
+            <div class="intro-lead-in">Błogosławione ręce, kiedy jest ich więcej</div>
+
+        </div>
+
+            <div th:if="${currentUser}" class="intro-text"><div th:text="'Witaj '+${currentUser.getUser().getLogin()}+'!'"
+                                         class="intro-lead-in"></div>
+
+            <div>
+                <form action="find" method="post">
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+              <div class="col-sm-3">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="surname" placeholder="Wpisz nazwisko">
+
+                    </div>
+
+              </div>
+                <div class="col-sm-9">
+                    <button style="float: left" type="submit" class="btn btn-success">Wyszukaj</button>
+                </div>
+                </form>
+            </div>
+
+           <div th:if="${!list.isEmpty()}" class="box">
+               <div class="box-content">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Imie:</th>
+                    <th>Nazwisko:</th>
+                    <th>Email:</th>
+                </tr>
+                </thead>
+                <div th:each="user:${list}">
+                <tbody>
+                <tr th:if="${currentUser.getUser().getLogin().equals(user.getLogin())}" class="success">
+                    <td th:text="${user.getName()}"></td>
+                    <td th:text="${user.getSurname()}"></td>
+                    <td th:text="${user.getEmail()}"></td>
+                </tr>
+                <tr th:if="${!(currentUser.getUser().getLogin().equals(user.getLogin()))}">
+                    <td th:text="${user.getName()}"></td>
+                    <td th:text="${user.getSurname()}"></td>
+                    <td th:text="${user.getEmail()}"></td>
+                </tr>
+                </tbody>
+                </div>
+            </table>
+               </div>
+           </div>
+            <div th:if="${list.isEmpty()}" class="box">
+                <div class="alert alert-danger">
+                    <p><strong>Uwaga uzytkowniku!</strong> Nie ma uzytkownikow o podanym nazwisku.</p>
+                </div>
+            </div>
+            </div>
+    </div>
+</header>
+
+</body>
+</html>

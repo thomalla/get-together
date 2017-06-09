@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/generalLayout :: head(pageTitle='Rejestracja')">
+</head>
+
+<body>
+<div th:switch="${currentUser!=null}">
+    <div th:case="false" th:include="layout/unloggedLayout :: toolbar"></div>
+    <div th:case="true" th:include="layout/loggedLayout :: toolbar"></div>
+</div>
+    <div id="fullscreen_bg" class="fullscreen_bg"/>
+
+    <header>
+
+        <link href="css/register.css" rel="stylesheet">
+
+        <div class="container">
+            <div class="row centered-form">
+                <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Rejestracja</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div th:if="!${errors.isEmpty()}">
+                                <div th:each="error:${errors}">
+                                    <p class="alert alert-danger" th:text="${error.getDefaultMessage()}"/></p>
+                                </div>
+                            </div>
+                            <form action="register" modelAttribute="form" onkeyup="return registerValidation()" method="post">
+                                <input type="hidden"
+                                       th:name="${_csrf.parameterName}"
+                                       th:value="${_csrf.token}" />
+                                <div class="form-group">
+                                    <input type="text" name="login" id="login" class="form-control input-sm" placeholder="Nazwa użytkownika" required>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" name="name" id="name" class="form-control input-sm floatlabel" placeholder="Imię" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" name="surname" id="surname" class="form-control input-sm" placeholder="Nazwisko" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Adres E-mail" required>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <input type="password" name="password" id="password" class="form-control input-sm" placeholder="Hasło" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <input type="password" name="passwordRepeated" id="passwordRepeated" class="form-control input-sm" placeholder="Powtórz hasło" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="submit" value="Zarejestruj się" class="btn btn-lg btn-primary btn-block">
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script type="text/javascript" src="js/register.js"></script>
+</body>
+</html>

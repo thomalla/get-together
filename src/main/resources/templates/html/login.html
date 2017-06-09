@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/generalLayout :: head(pageTitle='login')">
+</head>
+
+<body>
+<div th:switch="${currentUser!=null}">
+    <div th:case="false" th:include="layout/unloggedLayout :: toolbar"></div>
+    <div th:case="true" th:include="layout/loggedLayout :: toolbar"></div>
+</div>
+<div id="fullscreen_bg" class="fullscreen_bg"/>
+
+<header>
+
+    <link href="css/signin.css" rel="stylesheet">
+
+    <div class="container">
+        <form class="form-signin" action="login" method="post">
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}" />
+            <h2 class="form-signin-heading">Zaloguj się</h2>
+            <p class="alert alert-danger" th:if="${error.isPresent()}">Nazwa użytkownika lub hasło jest niepoprawne, spróbuj ponownie</p>
+            <label for="login" class="sr-only">Nazwa użytkownika</label>
+            <input type="text" id="login" name="login" class="form-control" placeholder="Nazwa użytkownika" required autofocus>
+            <label for="password" class="sr-only">Hasło</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Hasło" required>
+
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj się</button>
+            <hr>
+        </form>
+            <div>
+            <label class = "register-link">Nie masz jeszcze konta?</label>
+            <button class="btn btn-default btn-xs" onclick="window.location.href='/register'">Zarejestruj się</button>
+            </div>
+
+
+    </div>
+</header>
+</body>
+</html>
